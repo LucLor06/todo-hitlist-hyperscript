@@ -7,11 +7,42 @@
     <script src="https://unpkg.com/hyperscript.org@0.9.13"></script>
 </head>
 <body>
+    <script type="text/hyperscript">
+        behavior Removable
+            on click
+                remove the closest <li/>
+            end
+        end
+
+        def createTask(task)
+            set newTask to #task-template.cloneNode(true)
+            remove @style from newTask
+            remove @id from newTask
+
+            set newTaskText to <div/> in newTask
+            set the innerText of newTaskText to task
+
+            return newTask
+        end
+    </script>
+    <li style="display: none;" class="task" id="task-template">
+        <div></div>
+        <button _="install Removable">Remove</button>
+    </li>
     <h1>ToDo</h1>
     <form>
         <input type="text" name="task">
-        <button type="button">Submit</button>
+        <button type="button" _="
+        on click
+            get the closest <form/>
+            set data to it as Values
+            if data.task
+                set newTask to createTask(data.task)
+                put newTask at the end of #tasks
+            end
+            reset() the closest <form/> 
+        end">Submit</button>
     </form>
-    <ul></ul>
+    <ul id="tasks"></ul>
 </body>
 </html>
